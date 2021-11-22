@@ -1,0 +1,90 @@
+@font-face {
+    font-family: "spongebob-font";
+    src: url("Assets/fonts/SpongeboyRegular-gx2n6.ttf");
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+    background-image: url(Assets/images/bikini\ bottom.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.page-title {
+    font-family: "spongebob-font";   
+    color: #FFEE28;
+    font-size: 4em;
+    text-align: center;
+    text-shadow: 3px 3px black;    
+}
+
+.game-info-container {
+    font-family: "spongebob-font";
+    color: #FFEE28;
+    font-size: 2em;
+    text-shadow: 2px 2px black;
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content:space-between; 
+}
+
+.game-container {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-gap: 20px;
+    margin: 50px;
+    justify-content: center;
+}
+
+.card {
+    position: relative; 
+    height: 175px;
+    width: 125px;
+}
+
+.card-face {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* center y axis */
+    align-items: center; /* center a axis */
+    backface-visibility: hidden;
+}
+
+.card-front {
+    background: linear-gradient(#89b2ff, #5D71F6, #2a57fb);
+    border: 5px solid #ffea00;
+    outline: 4px solid black;
+    transform: rotateY(180deg);
+    transition: 500ms ease-in-out;
+} 
+
+.card-back {
+    border: 5px solid #ffea00;
+    outline: 4px solid black;
+    transition: 500ms ease-in-out;
+}
+
+.card-value {
+    position: absolute;
+    height: 85%;
+    width: 85%;
+    transition: 100ms ease-in-out;
+}
+
+.jellyfish {
+    position: absolute;
+    height: 101%;
+    width: 101%;
+    transition: 100ms ease-in-out 
+}
+
+.card:hover {
+    transform: scale(1.1);
+}
