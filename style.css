@@ -90,10 +90,41 @@ body {
     transform: scale(1.1);
 }
 
-.card:hover .card-front {
+.card.visible .card-front {
     transform: rotateY(0deg);
 } 
 
-.card:hover .card-back {
+.card.visible .card-back {
     transform: rotateY(180deg);
-} 
+}
+
+@keyframes overlay-grow {
+    from {
+        background-color: rgba(0, 0, 0, 0);
+        font-size: 0;
+    }
+    to {
+        background-color: rgba(93, 104, 251, 0.541);
+        font-size: 6em;
+    }
+}
+
+.overlay-text {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    font-family: "spongebob-font";
+    color: #FFEE28;
+    text-shadow: 5px 5px black;  
+}
+
+.overlay-text.visible { 
+    display: flex;
+    animation: overlay-grow 500ms forwards;
+}
