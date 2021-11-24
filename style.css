@@ -104,7 +104,8 @@ body {
         font-size: 0;
     }
     to {
-        background-color: rgba(93, 104, 251, 0.541);
+        background-color: rgba(30, 38, 160, 0.93);
+        height: 1085px;
         font-size: 6em;
     }
 }
@@ -126,5 +127,11 @@ body {
 
 .overlay-text.visible { 
     display: flex;
+    flex-direction: column;
     animation: overlay-grow 500ms forwards;
 }
+
+#time-setting {
+    position: absolute;
+}
+

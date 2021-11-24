@@ -43,13 +43,18 @@ class AudioController {
 }
 
 class SpongebobMatching {
-    constructor(totalTime, cards){
+    constructor(cards){
         this.cards = cards;
+        // this.totalTime = totalTime;
+        // this.timeRemaining = totalTime;
+        // this.timer = document.getElementById("time");
+        this.flipCounter = document.getElementById("flips");
+        this.audioController = new AudioController();
+    }
+    setTime(totalTime) {
         this.totalTime = totalTime;
         this.timeRemaining = totalTime;
         this.timer = document.getElementById("time");
-        this.flipCounter = document.getElementById("flips");
-        this.audioController = new AudioController();
     }
     start() {
         this.cardToCheck = null;
@@ -151,13 +156,28 @@ class SpongebobMatching {
 }
 
 function ready() {
-    let overlays = Array.from(document.getElementsByClassName("overlay-text"));
+    let secs = Array.from(document.getElementsByClassName("sec"));
+    let plays = Array.from(document.getElementsByClassName("play"));
     let cards = Array.from(document.getElementsByClassName("card"));
-    let game = new SpongebobMatching(1, cards);
+    let game = new SpongebobMatching(cards);
 
-    overlays.forEach(overlay => {
-        overlay.addEventListener("click", () => {
-            overlay.classList.remove("visible");
+    secs.forEach(sec => {
+        sec.addEventListener("click", () => {
+            let time = parseInt(sec.id);
+            document.getElementById("time-setting").classList.remove("visible")
+            document.getElementById("game-start-text").classList.add("visible");
+            game.setTime(time);
+        })    
+    })
+
+    console.log(time);
+    console.log(typeof time);
+
+    
+
+    plays.forEach(play => {
+        play.addEventListener("click", () => {
+            play.classList.remove("visible");
             game.start();
         })
     })
