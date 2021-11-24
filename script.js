@@ -2,15 +2,17 @@ class AudioController {
     constructor() {
         this.bgMusic = new Audio("Assets/audio/spongebob_closing_theme_song.wav");
         this.readySound = new Audio("Assets/audio/im_ready.wav");
-        this.flipSound = new Audio("Assets/audio/flip_sound.wav");       
+        this.flipSound = new Audio("Assets/audio/flip.wav");       
         this.victorySound = new Audio("Assets/audio/spongebob_victory.wav");
         this.failSound = new Audio("Assets/audio/spongebob_fail.wav");
-        this.yes = new Audio("Assets/audio/yes.wav");
-        this.yeah = new Audio("Assets/audio/yeah.wav");
-        this.yeah2 = new Audio("Assets/audio/yeah2.wav");
-        this.yeah3 = new Audio("Assets/audio/yeah3.wav");
-        this.matchSound = [this.yes, this.yeah, this.yeah2, this.yeah3];
+        this.yes = new Audio("Assets/audio/yes-excellent.wav");
+        // this.yeah = new Audio("Assets/audio/yeah.wav");
+        // this.yeah2 = new Audio("Assets/audio/yeah2.wav");
+        // this.yeah3 = new Audio("Assets/audio/yeah3.wav");
         this.bgMusic.volume = 0.5;
+        this.readySound.volume = 0.5; 
+        this.victorySound.volume = 0.5;
+        this.failSound.volume = 0.5;
         this.bgMusic.loop = true;
     }
     startBgMusic() {
@@ -24,8 +26,8 @@ class AudioController {
         this.flipSound.play();
     }
     match() {
-        let randNumber = Math.floor(Math.random() * this.matchSound.length);
-        this.matchSound[randNumber].play();
+        let randNumber = Math.random();
+        if(randNumber < 0.5) this.yes.play();
     }
     ready() {
         this.readySound.play();
@@ -61,7 +63,7 @@ class SpongebobMatching {
             this.shuffleCards();
             this.countDown = this.startCountDown();
             this.busy = false;
-        }, 100);
+        }, 500);
         this.hideCards();
         this.timer.innerText = this.timeRemaining;
         this.flipCounter.innerText = this.totalClicks;
@@ -151,7 +153,7 @@ class SpongebobMatching {
 function ready() {
     let overlays = Array.from(document.getElementsByClassName("overlay-text"));
     let cards = Array.from(document.getElementsByClassName("card"));
-    let game = new SpongebobMatching(100, cards);
+    let game = new SpongebobMatching(1, cards);
 
     overlays.forEach(overlay => {
         overlay.addEventListener("click", () => {
