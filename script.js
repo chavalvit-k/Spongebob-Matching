@@ -50,6 +50,18 @@ class SpongebobMatching {
         this.timeRemaining = totalTime;
         this.timer = document.getElementById("time");
     }
+    setMode(gameMode) {
+        if(gameMode === "no-time-limit"){
+            this.setTime(9999);
+        }
+        else if(gameMode === "reveal"){
+            this.revealCards();
+            setTimeout(() => {
+                this.hideCards();
+                this.countDown = this.startCountDown(); 
+            }, 1000)
+        }
+    }
     start() {
         this.cardToCheck = null;
         this.totalClicks = 0;
@@ -57,16 +69,22 @@ class SpongebobMatching {
         this.matchedCards = [];
         this.busy = true;
         this.audioController.ready();
+        this.shuffleCards();    
         setTimeout(() => {
-            this.audioController.startBgMusic();
-            this.shuffleCards();
-            this.countDown = this.startCountDown();
+            this.audioController.startBgMusic();      
+            if(this.mode !== "reveal"){
+                this.countDown = this.startCountDown();  
+            }
             this.busy = false;
         }, 500);
-
-        this.hideCards();
+        this.setMode(this.mode);
         this.timer.innerText = this.timeRemaining;
         this.flipCounter.innerText = this.totalClicks;
+    }
+    revealCards() {
+        this.cards.forEach(card =>{
+            card.classList.add("visible");
+        })
     }
     hideCards() {
         this.cards.forEach(card => {
@@ -163,14 +181,27 @@ function ready() {
     let plays = Array.from(document.getElementsByClassName("play"));
     let cards = Array.from(document.getElementsByClassName("card"));
     let gameEnds = Array.from(document.getElementsByClassName("game-end"));
+    let modes = Array.from(document.getElementsByClassName("mode"));
     let game = new SpongebobMatching(cards);
 
     gameEnds.forEach(gameEnd => {
         gameEnd.addEventListener("click", () => {
             if(!game.busy){
-               gameEnd.classList.remove("visible");
-                document.getElementById("time-setting").classList.add("visible"); 
+                gameEnd.classList.remove("visible");
+                document.getElementById("game-mode").classList.add("visible"); 
             }
+        })
+    })
+
+    modes.forEach(mode => {
+        mode.addEventListener("click", () => {
+            game.mode = mode.id;
+            document.getElementById("game-mode").classList.remove("visible")
+            if(mode.id === "no-time-limit"){
+                document.getElementById("game-start-text").classList.add("visible");
+            } else {
+                document.getElementById("time-setting").classList.add("visible");
+            }          
         })
     })
 
@@ -180,6 +211,7 @@ function ready() {
             document.getElementById("time-setting").classList.remove("visible")
             document.getElementById("game-start-text").classList.add("visible");
             game.setTime(time);
+            game.hideCards();
         })    
     })
 

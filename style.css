@@ -137,6 +137,9 @@ body {
 }
 
 .sec {
-    align-items: flex-start
+    font-size: 0.8em;
 }
 
+.mode {
+    font-size: 0.8em;
+}
