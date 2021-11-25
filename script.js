@@ -6,9 +6,6 @@ class AudioController {
         this.victorySound = new Audio("Assets/audio/spongebob_victory.wav");
         this.failSound = new Audio("Assets/audio/spongebob_fail.wav");
         this.yes = new Audio("Assets/audio/yes-excellent.wav");
-        // this.yeah = new Audio("Assets/audio/yeah.wav");
-        // this.yeah2 = new Audio("Assets/audio/yeah2.wav");
-        // this.yeah3 = new Audio("Assets/audio/yeah3.wav");
         this.bgMusic.volume = 0.5;
         this.readySound.volume = 0.5; 
         this.victorySound.volume = 0.5;
@@ -45,9 +42,6 @@ class AudioController {
 class SpongebobMatching {
     constructor(cards){
         this.cards = cards;
-        // this.totalTime = totalTime;
-        // this.timeRemaining = totalTime;
-        // this.timer = document.getElementById("time");
         this.flipCounter = document.getElementById("flips");
         this.audioController = new AudioController();
     }
@@ -69,6 +63,7 @@ class SpongebobMatching {
             this.countDown = this.startCountDown();
             this.busy = false;
         }, 500);
+
         this.hideCards();
         this.timer.innerText = this.timeRemaining;
         this.flipCounter.innerText = this.totalClicks;
@@ -127,7 +122,7 @@ class SpongebobMatching {
     }
     shuffleCards() {
         for(let i=this.cards.length-1 ; i>0 ; i--) {
-            let randNumber = Math.floor(Math.random() * (i+1));
+            let randNumber = Math.floor(Math.random() * (this.cards.length-1));
             this.cards[randNumber].style.order = i;
             this.cards[i].style.order = randNumber;           
         }
@@ -146,12 +141,20 @@ class SpongebobMatching {
         this.audioController.stopBgMusic();
         this.audioController.fail();
         document.getElementById("game-over-text").classList.add("visible");
+        this.busy = true;
+        setTimeout(() => {
+            this.busy = false;
+        }, 2000)
     }
     victory() {
         clearInterval(this.countDown);
         this.audioController.stopBgMusic();
         this.audioController.victory();
         document.getElementById("game-victory-text").classList.add("visible");
+        this.busy = true;
+        setTimeout(() => {
+            this.busy = false;
+        }, 2000)
     }
 }
 
@@ -159,7 +162,17 @@ function ready() {
     let secs = Array.from(document.getElementsByClassName("sec"));
     let plays = Array.from(document.getElementsByClassName("play"));
     let cards = Array.from(document.getElementsByClassName("card"));
+    let gameEnds = Array.from(document.getElementsByClassName("game-end"));
     let game = new SpongebobMatching(cards);
+
+    gameEnds.forEach(gameEnd => {
+        gameEnd.addEventListener("click", () => {
+            if(!game.busy){
+               gameEnd.classList.remove("visible");
+                document.getElementById("time-setting").classList.add("visible"); 
+            }
+        })
+    })
 
     secs.forEach(sec => {
         sec.addEventListener("click", () => {
@@ -169,11 +182,6 @@ function ready() {
             game.setTime(time);
         })    
     })
-
-    console.log(time);
-    console.log(typeof time);
-
-    
 
     plays.forEach(play => {
         play.addEventListener("click", () => {
@@ -187,6 +195,7 @@ function ready() {
            game.flipCard(card); 
         })    
     })
+
 }
 
 if(document.readyState === "loading") {

@@ -106,7 +106,7 @@ body {
     to {
         background-color: rgba(30, 38, 160, 0.93);
         height: 1085px;
-        font-size: 6em;
+        font-size: 5em;
     }
 }
 
@@ -131,7 +131,12 @@ body {
     animation: overlay-grow 500ms forwards;
 }
 
-#time-setting {
+.menu {
     position: absolute;
+    justify-content: start;
+}
+
+.sec {
+    align-items: flex-start
 }
 
