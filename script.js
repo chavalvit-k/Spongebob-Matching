@@ -69,15 +69,16 @@ class SpongebobMatching {
         this.matchedCards = [];
         this.busy = true;
         this.audioController.ready();
-        this.shuffleCards();    
-        setTimeout(() => {
-            this.audioController.startBgMusic();      
+        this.audioController.startBgMusic();
+        this.shuffleCards();
+        this.setMode(this.mode);
+        let delay = this.mode === "reveal" ? 1500 : 500;
+        setTimeout(() => {            
             if(this.mode !== "reveal"){
                 this.countDown = this.startCountDown();  
             }
-            this.busy = false;
-        }, 500);
-        this.setMode(this.mode);
+            this.busy = false;         
+        }, delay);  
         this.timer.innerText = this.timeRemaining;
         this.flipCounter.innerText = this.totalClicks;
     }
