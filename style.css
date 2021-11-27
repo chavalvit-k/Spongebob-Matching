@@ -13,7 +13,8 @@ html {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-  }
+    cursor: url("Assets/cursors/Krabby\ Patty\ Normal\ Select.cur"), auto;
+}
 
 .page-title {
     font-family: "spongebob-font";   
@@ -144,3 +145,4 @@ html {
     font-size: 0.65em;
     margin-top: 50px;
 }
+
