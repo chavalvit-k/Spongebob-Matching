@@ -146,12 +146,15 @@ class SpongebobMatching {
     match(card1, card2) {
         this.matchedCards.push(card1);
         this.matchedCards.push(card2);
-        card1.classList.add("matched");
-        card2.classList.add("matched");
-        this.audioController.match();
+        this.audioController.match();         
+        setTimeout(() => {
+            card1.classList.add("matched");
+            card2.classList.add("matched");
+            
+        }, 1000);      
         if(this.matchedCards.length === this.cards.length) {
             this.victory();
-        }
+        } 
     }
     misMatch(card1, card2) {
         this.busy = true;
