@@ -63,14 +63,13 @@ html {
     background: linear-gradient(#fdcd2d , #ffed89 );
     border: 5px solid #ffc400;
     outline: 4px solid black;
-    transform: rotateY(0deg);
+    transform: rotateY(180deg);
     transition: 500ms ease-in-out;
 } 
 
 .card-back {
     border: 5px solid #ffea00;
     outline: 4px solid black;
-    transform: rotateY(180deg);
     transition: 500ms ease-in-out;
 }
 
