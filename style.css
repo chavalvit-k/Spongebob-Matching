@@ -44,8 +44,8 @@ html {
 
 .card {
     position: relative; 
-    height: 175px;
-    width: 150px;
+    height: 150px;
+    width: 135px;
 }
 
 .card-face {
@@ -59,8 +59,8 @@ html {
 }
 
 .card-front {
-    background: linear-gradient(#89b2ff, #5D71F6, #2a57fb);
-    border: 5px solid #ffea00;
+    background: linear-gradient(#fdcd2d , #ffed89 );
+    border: 5px solid #ffc400;
     outline: 4px solid black;
     transform: rotateY(180deg);
     transition: 500ms ease-in-out;
