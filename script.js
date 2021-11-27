@@ -73,19 +73,19 @@ class SpongebobMatching {
     setCollections(collections) {
         let collectionsImage = [];
         if(collections === "characters-3d"){
-            collectionsImage = ["gary", "krabs", "patrick", "plankton", "puff", "sandy", "spongebob", "squidward"];
+            collectionsImage = ["gary", "krabs", "patrick", "plankton", "karen", "sandy", "spongebob", "squidward", "mermaid_man", "larry"];
             collectionsImage = collectionsImage.map(collection => `Assets/images/3d/${collection}_3d.png`);
         }
         else if(collections === "locations"){
-            collectionsImage = ["chum_bucket", "goo_lagoon", "jellyfish_fields", "krusty_krab", "patrick_house", "sandy_treedome", "spongebob_house", "squidward_house"];
+            collectionsImage = ["chum_bucket", "goo_lagoon", "jellyfish_fields", "krusty_krab", "patrick_house", "sandy_treedome", "spongebob_house", "squidward_house", "sand_mountain", "taco_sombrero"];
             collectionsImage = collectionsImage.map(collection => `Assets/images/locations/${collection}.png`);
         }
         else{
-            collectionsImage = ["gary" ,"krabs", "patrick", "pearl", "plankton", "puff", "sandy", "spongebob", "squidward"];
+            collectionsImage = ["gary" ,"krabs", "patrick", "pearl", "plankton", "puff", "sandy", "spongebob", "squidward", "karen"];
             collectionsImage = collectionsImage.map(collection => `Assets/images/characters/${collection}.png`)
         }
 
-        for(let i=0 ; i<16 ; i+=2){
+        for(let i=0 ; i<20 ; i+=2){
             this.cards[i].getElementsByClassName("card-value")[0].src = collectionsImage[i/2];
             this.cards[i+1].getElementsByClassName("card-value")[0].src = collectionsImage[i/2];
         }
