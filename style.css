@@ -36,7 +36,7 @@ html {
 
 .game-container {
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(5, auto);
     grid-gap: 20px;
     margin: 50px;
     justify-content: center;
@@ -63,13 +63,14 @@ html {
     background: linear-gradient(#fdcd2d , #ffed89 );
     border: 5px solid #ffc400;
     outline: 4px solid black;
-    transform: rotateY(180deg);
+    transform: rotateY(0deg);
     transition: 500ms ease-in-out;
 } 
 
 .card-back {
     border: 5px solid #ffea00;
     outline: 4px solid black;
+    transform: rotateY(180deg);
     transition: 500ms ease-in-out;
 }
 
