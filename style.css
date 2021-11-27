@@ -146,3 +146,6 @@ html {
     margin-top: 50px;
 }
 
+.card.matched .card-front {
+    display: none;
+}
