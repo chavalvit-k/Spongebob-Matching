@@ -15,14 +15,6 @@ html {
     background-size: cover;
   }
 
-/* body {
-    height: 100%;
-    background-image: url(Assets/images/bikini\ bottom.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-} */
-
 .page-title {
     font-family: "spongebob-font";   
     color: #FFEE28;
@@ -53,7 +45,7 @@ html {
 .card {
     position: relative; 
     height: 175px;
-    width: 125px;
+    width: 150px;
 }
 
 .card-face {
@@ -82,8 +74,8 @@ html {
 
 .card-value {
     position: absolute;
-    height: 85%;
-    width: 85%;
+    height: 100%;
+    width: 100%;
     transition: 100ms ease-in-out;
 }
 
