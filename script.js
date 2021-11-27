@@ -33,9 +33,17 @@ class AudioController {
         this.victorySound.play();
         this.stopBgMusic();
     }
+    stopVictory() {
+        this.victorySound.pause();
+        this.victorySound.currentTime = 0;
+    }
     fail() {
         this.failSound.play();
         this.stopBgMusic();
+    }
+    stopFail() {
+        this.failSound.pause();
+        this.failSound.currentTime = 0;
     }
 }
 
@@ -59,7 +67,27 @@ class SpongebobMatching {
             setTimeout(() => {
                 this.hideCards();
                 this.countDown = this.startCountDown(); 
-            }, 1000)
+            }, 500)
+        }
+    }
+    setCollections(collections) {
+        let collectionsImage = [];
+        if(collections === "characters-3d"){
+            collectionsImage = ["gary", "krabs", "patrick", "plankton", "puff", "sandy", "spongebob", "squidward"];
+            collectionsImage = collectionsImage.map(collection => `Assets/images/3d/${collection}_3d.png`);
+        }
+        else if(collections === "locations"){
+            collectionsImage = ["chum_bucket", "goo_lagoon", "jellyfish_fields", "krusty_krab", "patrick_house", "sandy_treedome", "spongebob_house", "squidward_house"];
+            collectionsImage = collectionsImage.map(collection => `Assets/images/locations/${collection}.png`);
+        }
+        else{
+            collectionsImage = ["gary" ,"krabs", "patrick", "pearl", "plankton", "puff", "sandy", "spongebob", "squidward"];
+            collectionsImage = collectionsImage.map(collection => `Assets/images/characters/${collection}.png`)
+        }
+
+        for(let i=0 ; i<16 ; i+=2){
+            this.cards[i].getElementsByClassName("card-value")[0].src = collectionsImage[i/2];
+            this.cards[i+1].getElementsByClassName("card-value")[0].src = collectionsImage[i/2];
         }
     }
     start() {
@@ -72,7 +100,7 @@ class SpongebobMatching {
         this.audioController.startBgMusic();
         this.shuffleCards();
         this.setMode(this.mode);
-        let delay = this.mode === "reveal" ? 1500 : 500;
+        let delay = this.mode === "reveal" ? 1000 : 500;
         setTimeout(() => {            
             if(this.mode !== "reveal"){
                 this.countDown = this.startCountDown();  
@@ -175,6 +203,10 @@ class SpongebobMatching {
             this.busy = false;
         }, 2000)
     }
+    stopEndGameSound() {
+        this.audioController.stopFail();
+        this.audioController.stopVictory();
+    }
 }
 
 function ready() {
@@ -183,13 +215,16 @@ function ready() {
     let cards = Array.from(document.getElementsByClassName("card"));
     let gameEnds = Array.from(document.getElementsByClassName("game-end"));
     let modes = Array.from(document.getElementsByClassName("mode"));
+    let collections = Array.from(document.getElementsByClassName("collections"));
     let game = new SpongebobMatching(cards);
 
     gameEnds.forEach(gameEnd => {
         gameEnd.addEventListener("click", () => {
             if(!game.busy){
                 gameEnd.classList.remove("visible");
-                document.getElementById("game-mode").classList.add("visible"); 
+                document.getElementById("game-mode-setting").classList.add("visible");
+                game.hideCards();
+                game.stopEndGameSound();
             }
         })
     })
@@ -197,12 +232,20 @@ function ready() {
     modes.forEach(mode => {
         mode.addEventListener("click", () => {
             game.mode = mode.id;
-            document.getElementById("game-mode").classList.remove("visible")
+            document.getElementById("game-mode-setting").classList.remove("visible")
             if(mode.id === "no-time-limit"){
                 document.getElementById("game-start-text").classList.add("visible");
             } else {
-                document.getElementById("time-setting").classList.add("visible");
+                document.getElementById("collections-setting").classList.add("visible");
             }          
+        })
+    })
+
+    collections.forEach(collection => {
+        collection.addEventListener("click", () => {
+            document.getElementById("collections-setting").classList.remove("visible")
+            document.getElementById("time-setting").classList.add("visible");
+            game.setCollections(collection.id);
         })
     })
 
@@ -212,7 +255,6 @@ function ready() {
             document.getElementById("time-setting").classList.remove("visible")
             document.getElementById("game-start-text").classList.add("visible");
             game.setTime(time);
-            game.hideCards();
         })    
     })
 
