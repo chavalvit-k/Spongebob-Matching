@@ -191,7 +191,7 @@ class SpongebobMatching {
         this.busy = true;
         setTimeout(() => {
             this.busy = false;
-        }, 2000)
+        }, 1000)
     }
     victory() {
         clearInterval(this.countDown);
@@ -201,7 +201,7 @@ class SpongebobMatching {
         this.busy = true;
         setTimeout(() => {
             this.busy = false;
-        }, 2000)
+        }, 1000)
     }
     stopEndGameSound() {
         this.audioController.stopFail();
@@ -221,10 +221,10 @@ function ready() {
     gameEnds.forEach(gameEnd => {
         gameEnd.addEventListener("click", () => {
             if(!game.busy){
-                gameEnd.classList.remove("visible");
-                document.getElementById("game-mode-setting").classList.add("visible");
                 game.hideCards();
                 game.stopEndGameSound();
+                gameEnd.classList.remove("visible");
+                document.getElementById("game-mode-setting").classList.add("visible");         
             }
         })
     })
@@ -233,28 +233,29 @@ function ready() {
         mode.addEventListener("click", () => {
             game.mode = mode.id;
             document.getElementById("game-mode-setting").classList.remove("visible")
-            if(mode.id === "no-time-limit"){
-                document.getElementById("game-start-text").classList.add("visible");
-            } else {
-                document.getElementById("collections-setting").classList.add("visible");
-            }          
+            document.getElementById("collections-setting").classList.add("visible");
         })
     })
 
     collections.forEach(collection => {
         collection.addEventListener("click", () => {
-            document.getElementById("collections-setting").classList.remove("visible")
-            document.getElementById("time-setting").classList.add("visible");
             game.setCollections(collection.id);
+            document.getElementById("collections-setting").classList.remove("visible")
+            if(game.mode === "no-time-limit"){
+                document.getElementById("game-start-text").classList.add("visible");
+            }
+            else{
+                document.getElementById("time-setting").classList.add("visible");
+            }     
         })
     })
 
     secs.forEach(sec => {
         sec.addEventListener("click", () => {
             let time = parseInt(sec.id);
-            document.getElementById("time-setting").classList.remove("visible")
-            document.getElementById("game-start-text").classList.add("visible");
             game.setTime(time);
+            document.getElementById("time-setting").classList.remove("visible")
+            document.getElementById("game-start-text").classList.add("visible");      
         })    
     })
 
