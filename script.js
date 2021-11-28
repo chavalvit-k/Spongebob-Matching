@@ -50,24 +50,26 @@ class AudioController {
 class SpongebobMatching {
     constructor(cards){
         this.cards = cards;
+        this.totalTime = 0;
+        this.flipCounter = 0;
+        this.timer = document.getElementById("time");
         this.flipCounter = document.getElementById("flips");
         this.audioController = new AudioController();
     }
-    setTime(totalTime) {
-        this.totalTime = totalTime;
-        this.timeRemaining = totalTime;
-        this.timer = document.getElementById("time");
-    }
     setMode(gameMode) {
         if(gameMode === "no-time-limit"){
-            this.setTime(9999);
+            this.totalFlips = 0;
+            this.totalTime = "-";
         }
         else if(gameMode === "reveal"){
+            this.totalTime = "-";
             this.revealCards();
             setTimeout(() => {
                 this.hideCards();
-                this.countDown = this.startCountDown(); 
-            }, 500)
+            }, 2500)
+        }
+        else{
+            this.totalFlips = 0;
         }
     }
     setCollections(collections) {
@@ -92,23 +94,21 @@ class SpongebobMatching {
     }
     start() {
         this.cardToCheck = null;
-        this.totalClicks = 0;
-        this.timeRemaining = this.totalTime;
         this.matchedCards = [];
         this.busy = true;
         this.audioController.ready();
         this.audioController.startBgMusic();
         this.shuffleCards();
         this.setMode(this.mode);
-        let delay = this.mode === "reveal" ? 1000 : 500;
+        let delay = this.mode === "reveal" ? 3000 : 500;
         setTimeout(() => {            
-            if(this.mode !== "reveal"){
+            if(this.mode === "default"){
                 this.countDown = this.startCountDown();  
             }
             this.busy = false;         
         }, delay);  
-        this.timer.innerText = this.timeRemaining;
-        this.flipCounter.innerText = this.totalClicks;
+        this.timer.innerText = this.totalTime;
+        this.flipCounter.innerText = this.totalFlips;
     }
     revealCards() {
         this.cards.forEach(card =>{
@@ -124,8 +124,13 @@ class SpongebobMatching {
     flipCard(card) {
         if(this.canFlipCard(card)){
             this.audioController.flip();
-            this.totalClicks++;
-            this.flipCounter.innerText = this.totalClicks;
+            if(this.mode === "reveal"){
+                this.totalFlips--;
+            }
+            else{
+                this.totalFlips++;
+            }
+            this.flipCounter.innerText = this.totalFlips;
             card.classList.add("visible");
 
             if(this.cardToCheck) {
@@ -138,7 +143,13 @@ class SpongebobMatching {
     checkMatch(card1, card2) {
         if(this.getCardValue(card1) === this.getCardValue(card2)){
             this.match(card1, card2);
+            if(this.totalFlips === 0 && this.matchedCards.length !== 20){ // reveal mode game over case
+                this.gameOver();
+            }       
         } else {
+            if(this.totalFlips === 0){ // reveal mode game over case
+                this.gameOver();
+            }
             this.misMatch(card1, card2);
         }
         this.cardToCheck = null;
@@ -149,8 +160,7 @@ class SpongebobMatching {
         this.audioController.match();         
         setTimeout(() => {
             card1.classList.add("matched");
-            card2.classList.add("matched");
-            
+            card2.classList.add("matched");        
         }, 1000);      
         if(this.matchedCards.length === this.cards.length) {
             this.victory();
@@ -179,9 +189,9 @@ class SpongebobMatching {
     }
     startCountDown() {
         return setInterval(() => {
-            this.timeRemaining--;
-            this.timer.innerText = this.timeRemaining;
-            if(this.timeRemaining === 0){
+            this.totalTime--;
+            this.timer.innerText = this.totalTime;
+            if(this.totalTime === 0){
                 this.gameOver();
             }
         }, 1000)
@@ -213,12 +223,13 @@ class SpongebobMatching {
 }
 
 function ready() {
-    let secs = Array.from(document.getElementsByClassName("sec"));
-    let plays = Array.from(document.getElementsByClassName("play"));
-    let cards = Array.from(document.getElementsByClassName("card"));
-    let gameEnds = Array.from(document.getElementsByClassName("game-end"));
     let modes = Array.from(document.getElementsByClassName("mode"));
     let collections = Array.from(document.getElementsByClassName("collections"));
+    let secs = Array.from(document.getElementsByClassName("sec"));
+    let flips = Array.from(document.getElementsByClassName("flips"));
+    let plays = Array.from(document.getElementsByClassName("play"));
+    let gameEnds = Array.from(document.getElementsByClassName("game-end"));
+    let cards = Array.from(document.getElementsByClassName("card"));  
     let game = new SpongebobMatching(cards);
 
     gameEnds.forEach(gameEnd => {
@@ -247,6 +258,9 @@ function ready() {
             if(game.mode === "no-time-limit"){
                 document.getElementById("game-start-text").classList.add("visible");
             }
+            else if(game.mode === "reveal"){
+                document.getElementById("flips-setting").classList.add("visible");
+            }
             else{
                 document.getElementById("time-setting").classList.add("visible");
             }     
@@ -256,10 +270,19 @@ function ready() {
     secs.forEach(sec => {
         sec.addEventListener("click", () => {
             let time = parseInt(sec.id);
-            game.setTime(time);
+            game.totalTime = time;
             document.getElementById("time-setting").classList.remove("visible")
             document.getElementById("game-start-text").classList.add("visible");      
         })    
+    })
+
+    flips.forEach(flip => {
+        flip.addEventListener("click", () => {
+            let totalFlips = parseInt(flip.id);
+            game.totalFlips = totalFlips;
+            document.getElementById("flips-setting").classList.remove("visible");
+            document.getElementById("game-start-text").classList.add("visible");
+        })
     })
 
     plays.forEach(play => {
