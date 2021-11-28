@@ -155,3 +155,8 @@ html {
     opacity: 0;
     animation: faded-out 250ms;
 }
+
+.flips {
+    font-size: 0.65em;
+    margin-top: 50px;
+}
