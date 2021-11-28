@@ -160,3 +160,11 @@ html {
     font-size: 0.65em;
     margin-top: 50px;
 }
+
+.hoverable {
+    transition: transform 300ms ease-in-out;
+}
+
+.hoverable:hover {
+    transform: scale(1.3);
+}
